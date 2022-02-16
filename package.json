@@ -1,0 +1,54 @@
+{
+  "name": "validatenv",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "A simple environment variables validator Node.js and web browsers.",
+  "author": "Mathieu Acthernoene <zoontek@gmail.com>",
+  "homepage": "https://github.com/zoontek/validatenv#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zoontek/validatenv.git"
+  },
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "env",
+    "environment",
+    "dotenv",
+    "validation",
+    "validator",
+    "typescript"
+  ],
+  "scripts": {
+    "build": "yarn clean && microbundle -f cjs,es",
+    "clean": "rm -rf dist",
+    "dev": "microbundle watch",
+    "format": "prettier '**/*.{js,md,ts,tsx}' --write",
+    "lint": "eslint --ext ts,tsx __tests__ src",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "tscheck": "tsc --noEmit",
+    "prepare": "yarn lint && yarn test && yarn build"
+  },
+  "prettier": {
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.18",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "babel-jest": "^27.5.1",
+    "eslint": "^8.9.0",
+    "jest": "^27.5.1",
+    "microbundle": "^0.14.2",
+    "prettier": "^2.5.1",
+    "prettier-plugin-organize-imports": "^2.3.4",
+    "typescript": "^4.5.5"
+  }
+}

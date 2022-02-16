@@ -1,0 +1,10 @@
+# production
+/dist
+
+# dependencies
+/node_modules
+yarn-debug.log*
+yarn-error.log*
+
+# misc
+.DS_Store
