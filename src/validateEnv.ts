@@ -57,10 +57,7 @@ export const validateEnv = <
   });
 
   if (invalidVariables.length > 0 || missingVariables.length > 0) {
-    throw new EnvError({
-      invalidVariables,
-      missingVariables,
-    });
+    throw new EnvError({ invalidVariables, missingVariables });
   }
 
   // @ts-expect-error
