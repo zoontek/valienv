@@ -1,26 +1,26 @@
 import { EnvValidationError, validateEnv, Validator } from "../src";
 
-const nodeEnv: Validator<"development" | "test" | "production"> = (input) => {
-  if (input === "development" || input === "test" || input === "production") {
-    return input;
+const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
+  if (value === "development" || value === "test" || value === "production") {
+    return value;
   }
 };
 
-const email: Validator<string> = (input) => {
-  if (/.+@.+\..+/.test(input)) {
-    return input;
+const email: Validator<string> = (value) => {
+  if (/.+@.+\..+/.test(value)) {
+    return value;
   }
 };
 
-const url: Validator<string> = (input) => {
+const url: Validator<string> = (value) => {
   try {
-    new URL(input);
-    return input;
+    new URL(value);
+    return value;
   } catch (_error) {} // eslint-disable-line no-empty
 };
 
-const port: Validator<number> = (input) => {
-  const parsed = parseInt(input);
+const port: Validator<number> = (value) => {
+  const parsed = parseInt(value);
 
   if (parsed > 0 && parsed < 65536) {
     return parsed;
@@ -58,6 +58,7 @@ test("with invalid input", () => {
     NODE_ENV: "staging",
     SERVER_PORT: "three thousand",
   };
+
   try {
     validateEnv({
       env: input,

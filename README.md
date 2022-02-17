@@ -112,8 +112,8 @@ import { validateEnv, Validator } from "valienv";
 
 // A validator take raw input, try to parse it and
 // returns the result in case of valid value:
-const port: Validator<number> = (input /*: string*/) => {
-  const parsed = parseInt(input);
+const port: Validator<number> = (value /*: string*/) => {
+  const parsed = parseInt(value);
 
   if (parsed > 0 && parsed < 65536) {
     return parsed;
@@ -150,22 +150,22 @@ export const env = validateEnv({
   env: process.env,
   validators: {
     // inlined validators return types are correctly infered
-    ETHEREUM_ADDRESS: (input) => {
-      if (validator.isEthereumAddress(input)) {
-        return input;
+    ETHEREUM_ADDRESS: (value) => {
+      if (validator.isEthereumAddress(value)) {
+        return value;
       }
     },
-    NODE_ENV: (input) => {
+    NODE_ENV: (value) => {
       if (
-        input === "development" ||
-        input === "test" ||
-        input === "production"
+        value === "development" ||
+        value === "test" ||
+        value === "production"
       ) {
-        return input;
+        return value;
       }
     },
-    OPENED_COUNTRIES: (input) => {
-      const array = input.split(",");
+    OPENED_COUNTRIES: (value) => {
+      const array = value.split(",");
 
       if (array.every(validator.isISO31661Alpha2)) {
         return array;
