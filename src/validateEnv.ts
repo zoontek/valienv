@@ -1,7 +1,7 @@
 import { EnvError } from "./error";
 import { Validator } from "./validators";
 
-export const validate = <
+export const validateEnv = <
   Validators extends Record<string, Validator<unknown>>,
 >({
   env,

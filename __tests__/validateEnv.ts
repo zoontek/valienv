@@ -1,4 +1,4 @@
-import { bool, EnvError, nbr, str, validate } from "../src";
+import { bool, EnvError, nbr, str, validateEnv } from "../src";
 
 test("with valid input", () => {
   const input = {
@@ -7,7 +7,7 @@ test("with valid input", () => {
     BAZ: true,
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     validators: {
       FOO: str,
@@ -30,7 +30,7 @@ test("with extra env variables", () => {
     BAZ: true,
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     validators: {
       FOO: str,
@@ -50,7 +50,7 @@ test("with invalid env variables", () => {
   };
 
   try {
-    validate({
+    validateEnv({
       env: input,
       validators: {
         FOO: str,
@@ -71,7 +71,7 @@ test("with missing env variables", () => {
   };
 
   try {
-    validate({
+    validateEnv({
       env: input,
       validators: {
         FOO: str,
@@ -93,7 +93,7 @@ test("with invalid and missing env variables", () => {
   };
 
   try {
-    validate({
+    validateEnv({
       env: input,
       validators: {
         FOO: str,
@@ -115,7 +115,7 @@ test("with prefix", () => {
     REACT_APP_BAZ: true,
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     prefix: "REACT_APP_",
     validators: {
@@ -140,7 +140,7 @@ test("with prefix and env variables without it", () => {
   };
 
   try {
-    validate({
+    validateEnv({
       env: input,
       prefix: "REACT_APP_",
       validators: {
@@ -163,7 +163,7 @@ test("with overrides", () => {
     BAZ: true,
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     validators: {
       FOO: str,
@@ -187,7 +187,7 @@ test("with missing env variables and overrides", () => {
     FOO: "foo",
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     validators: {
       FOO: str,
@@ -212,7 +212,7 @@ test("with prefix and overrides", () => {
     REACT_APP_FOO: "foo",
   };
 
-  const output = validate({
+  const output = validateEnv({
     env: input,
     prefix: "REACT_APP_",
     validators: {
