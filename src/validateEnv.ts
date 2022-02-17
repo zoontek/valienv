@@ -1,4 +1,4 @@
-import { EnvError } from "./error";
+import { EnvValidationError } from "./error";
 import { Validator } from "./validators";
 
 export const validateEnv = <
@@ -57,7 +57,7 @@ export const validateEnv = <
   });
 
   if (invalidVariables.length > 0 || missingVariables.length > 0) {
-    throw new EnvError({ invalidVariables, missingVariables });
+    throw new EnvValidationError({ invalidVariables, missingVariables });
   }
 
   // @ts-expect-error

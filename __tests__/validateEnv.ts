@@ -1,4 +1,4 @@
-import { bool, EnvError, nbr, str, validateEnv } from "../src";
+import { bool, EnvValidationError, nbr, str, validateEnv } from "../src";
 
 test("with valid input", () => {
   const input = {
@@ -82,10 +82,13 @@ test("with invalid env variables", () => {
       },
     });
   } catch (error) {
-    expect(error).toBeInstanceOf(EnvError);
+    expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvError).invalidVariables).toEqual(["BAR", "BAZ"]);
-    expect((error as EnvError).missingVariables).toEqual([]);
+    expect((error as EnvValidationError).invalidVariables).toEqual([
+      "BAR",
+      "BAZ",
+    ]);
+    expect((error as EnvValidationError).missingVariables).toEqual([]);
   }
 });
 
@@ -104,10 +107,13 @@ test("with missing env variables", () => {
       },
     });
   } catch (error) {
-    expect(error).toBeInstanceOf(EnvError);
+    expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvError).invalidVariables).toEqual([]);
-    expect((error as EnvError).missingVariables).toEqual(["BAR", "BAZ"]);
+    expect((error as EnvValidationError).invalidVariables).toEqual([]);
+    expect((error as EnvValidationError).missingVariables).toEqual([
+      "BAR",
+      "BAZ",
+    ]);
   }
 });
 
@@ -127,10 +133,10 @@ test("with invalid and missing env variables", () => {
       },
     });
   } catch (error) {
-    expect(error).toBeInstanceOf(EnvError);
+    expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvError).invalidVariables).toEqual(["BAR"]);
-    expect((error as EnvError).missingVariables).toEqual(["BAZ"]);
+    expect((error as EnvValidationError).invalidVariables).toEqual(["BAR"]);
+    expect((error as EnvValidationError).missingVariables).toEqual(["BAZ"]);
   }
 });
 
@@ -176,10 +182,13 @@ test("with prefix and env variables without it", () => {
       },
     });
   } catch (error) {
-    expect(error).toBeInstanceOf(EnvError);
+    expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvError).invalidVariables).toEqual([]);
-    expect((error as EnvError).missingVariables).toEqual(["BAR", "BAZ"]);
+    expect((error as EnvValidationError).invalidVariables).toEqual([]);
+    expect((error as EnvValidationError).missingVariables).toEqual([
+      "BAR",
+      "BAZ",
+    ]);
   }
 });
 

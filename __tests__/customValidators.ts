@@ -1,4 +1,4 @@
-import { EnvError, validateEnv, Validator } from "../src";
+import { EnvValidationError, validateEnv, Validator } from "../src";
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (input) => {
   if (input === "development" || input === "test" || input === "production")
@@ -63,14 +63,14 @@ test("with invalid input", () => {
       },
     });
   } catch (error) {
-    expect(error).toBeInstanceOf(EnvError);
+    expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvError).invalidVariables).toEqual([
+    expect((error as EnvValidationError).invalidVariables).toEqual([
       "NODE_ENV",
       "SERVER_PORT",
     ]);
 
-    expect((error as EnvError).missingVariables).toEqual([
+    expect((error as EnvValidationError).missingVariables).toEqual([
       "USER_EMAIL",
       "SERVER_URL",
     ]);

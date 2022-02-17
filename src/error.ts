@@ -1,4 +1,4 @@
-export class EnvError extends Error {
+export class EnvValidationError extends Error {
   invalidVariables: string[];
   missingVariables: string[];
 
@@ -10,7 +10,7 @@ export class EnvError extends Error {
     missingVariables?: string[];
   }) {
     super("Some environment variables cannot be validated");
-    Object.setPrototypeOf(this, EnvError.prototype);
+    Object.setPrototypeOf(this, EnvValidationError.prototype);
 
     this.name = this.constructor.name;
     this.invalidVariables = invalidVariables;
