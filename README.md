@@ -139,12 +139,12 @@ import { validateEnv, Validator } from "../src";
 
 export type AllowedNodeEnv = "development" | "production";
 
-const nodeEnv: Validator<AllowedNodeEnv> = (input) => {
-  if (input === "development" || input === "production") return input;
-};
-
 const ethereumAddress: Validator<string> = (input) => {
   if (validator.isEthereumAddress(input)) return input;
+};
+
+const nodeEnv: Validator<AllowedNodeEnv> = (input) => {
+  if (input === "development" || input === "production") return input;
 };
 
 const countryCodeList: Validator<string[]> = (input) => {
