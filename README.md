@@ -114,7 +114,10 @@ import { validateEnv, Validator } from "valienv";
 // returns the result in case of valid value:
 const port: Validator<number> = (input /*: string*/) => {
   const parsed = parseInt(input);
-  if (parsed > 0 && parsed < 65536) return parsed;
+
+  if (parsed > 0 && parsed < 65536) {
+    return parsed;
+  }
 };
 
 // with process.env = {
@@ -135,22 +138,7 @@ You can even go wild by using stricter types, complex parsing, your favorite val
 
 ```ts
 import validator from "validator";
-import { validateEnv, Validator } from "../src";
-
-export type AllowedNodeEnv = "development" | "production";
-
-const ethereumAddress: Validator<string> = (input) => {
-  if (validator.isEthereumAddress(input)) return input;
-};
-
-const nodeEnv: Validator<AllowedNodeEnv> = (input) => {
-  if (input === "development" || input === "production") return input;
-};
-
-const countryCodeList: Validator<string[]> = (input) => {
-  const array = input.split(",");
-  if (array.every(validator.isISO31661Alpha2)) return array;
-};
+import { validateEnv } from "valienv";
 
 // with process.env = {
 //   ETHEREUM_ADDRESS: "0xb794f5ea0ba39494ce839613fffba74279579268",
@@ -161,15 +149,34 @@ const countryCodeList: Validator<string[]> = (input) => {
 export const env = validateEnv({
   env: process.env,
   validators: {
-    ETHEREUM_ADDRESS: ethereumAddress,
-    NODE_ENV: nodeEnv,
-    OPENED_COUNTRIES: countryCodeList,
+    // inlined validators return types are correctly infered
+    ETHEREUM_ADDRESS: (input) => {
+      if (validator.isEthereumAddress(input)) {
+        return input;
+      }
+    },
+    NODE_ENV: (input) => {
+      if (
+        input === "development" ||
+        input === "test" ||
+        input === "production"
+      ) {
+        return input;
+      }
+    },
+    OPENED_COUNTRIES: (input) => {
+      const array = input.split(",");
+
+      if (array.every(validator.isISO31661Alpha2)) {
+        return array;
+      }
+    },
   },
 });
 
 // -> typeof env = Readonly<{
 //   ETHEREUM_ADDRESS: string;
-//   NODE_ENV: AllowedNodeEnv;
+//   NODE_ENV: "development" | "production" | "test";
 //   OPENED_COUNTRIES: string[];
 // }>
 ```

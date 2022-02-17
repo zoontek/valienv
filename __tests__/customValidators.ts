@@ -1,12 +1,15 @@
 import { EnvValidationError, validateEnv, Validator } from "../src";
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (input) => {
-  if (input === "development" || input === "test" || input === "production")
+  if (input === "development" || input === "test" || input === "production") {
     return input;
+  }
 };
 
 const email: Validator<string> = (input) => {
-  if (/.+@.+\..+/.test(input)) return input;
+  if (/.+@.+\..+/.test(input)) {
+    return input;
+  }
 };
 
 const url: Validator<string> = (input) => {
@@ -18,7 +21,10 @@ const url: Validator<string> = (input) => {
 
 const port: Validator<number> = (input) => {
   const parsed = parseInt(input);
-  if (parsed > 0 && parsed < 65536) return parsed;
+
+  if (parsed > 0 && parsed < 65536) {
+    return parsed;
+  }
 };
 
 test("with valid input", () => {
