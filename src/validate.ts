@@ -19,6 +19,7 @@ export const validate = <
   [Key in keyof Validators]: Exclude<ReturnType<Validators[Key]>, undefined>;
 }> => {
   const variables: Record<string, unknown> = {};
+
   const invalidVariables: string[] = [];
   const missingVariables: string[] = [];
 
@@ -56,7 +57,10 @@ export const validate = <
   });
 
   if (invalidVariables.length > 0 || missingVariables.length > 0) {
-    throw new EnvError({ invalidVariables, missingVariables });
+    throw new EnvError({
+      invalidVariables,
+      missingVariables,
+    });
   }
 
   // @ts-expect-error
