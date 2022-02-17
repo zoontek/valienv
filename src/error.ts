@@ -1,14 +1,19 @@
 export class EnvError extends Error {
-  constructor(public faultyVariables: string[] = []) {
-    super(
-      faultyVariables.length > 0
-        ? `Some environment variables are missing or are invalid: ${faultyVariables
-            .map((variable) => `"${variable}"`)
-            .join(", ")}`
-        : "Unknown environment error",
-    );
+  invalidVariables: string[];
+  missingVariables: string[];
 
+  constructor({
+    invalidVariables = [],
+    missingVariables = [],
+  }: {
+    invalidVariables?: string[];
+    missingVariables?: string[];
+  }) {
+    super("Some environment variables cannot be validated");
     Object.setPrototypeOf(this, EnvError.prototype);
+
     this.name = this.constructor.name;
+    this.invalidVariables = invalidVariables;
+    this.missingVariables = missingVariables;
   }
 }

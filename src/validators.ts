@@ -1,4 +1,4 @@
-export type Validator<T> = (input: string) => T | void;
+export type Validator<T> = (input: string) => T | undefined;
 
 export const bool: Validator<boolean> = (input) => {
   if (input === "true") return true;

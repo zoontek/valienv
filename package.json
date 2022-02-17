@@ -1,5 +1,5 @@
 {
-  "name": "validatenv",
+  "name": "valienv",
   "version": "0.1.0",
   "license": "MIT",
   "description": "A simple environment variables validator Node.js and web browsers.",

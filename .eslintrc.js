@@ -26,6 +26,11 @@ module.exports = {
     "no-param-reassign": "error",
     "object-shorthand": "error",
 
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      { "ts-check": true, "ts-expect-error": false },
+    ],
+
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "@typescript-eslint/no-base-to-string": "error",
     "@typescript-eslint/no-explicit-any": "error",
