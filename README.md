@@ -45,7 +45,7 @@ export const env = validateEnv({
 // }>
 ```
 
-_⚠️  In case of incorrect environment variables, the function will throw an `EnvValidationError` exposing `invalidVariables` and `missingVariables` names (not their values) and preventing your application start._
+_⚠️  In case of incorrect environment variables, the function will throw an `EnvValidationError` exposing `invalidVariables` and `missingVariables` names (not their values) to prevent your application from starting._
 
 ## 📕 Advanced usage
 
