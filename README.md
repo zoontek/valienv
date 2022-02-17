@@ -104,7 +104,7 @@ _⚠️  The values set has to be correctly typed but are **not** validated._
 
 ## 🔧 Custom validators
 
-By default, `valienv` only bundle 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`).<br>
+By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`).<br>
 But it's very easy to write your own:
 
 ```ts
