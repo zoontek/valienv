@@ -185,4 +185,4 @@ export const env = validateEnv({
 
 ### Why not handling `NODE_ENV` for us?
 
-Frontend bundlers generally **statically replace** `process.env.NODE_ENV` values at building time, allowing minifiers like [`terser`](https://github.com/terser/terser) to eliminate dead code from production build. Aliasing `NODE_ENV` would prevent such optimisations. But if your are working with Node.js, feel free to implement a custom validator for it if you want 🙂!
+Frontend bundlers generally **statically replace** `process.env.NODE_ENV` values at build time, allowing minifiers like [`terser`](https://github.com/terser/terser) to eliminate dead code from production build. Aliasing `NODE_ENV` would prevent such optimisations. But if your are working with Node.js, feel free to implement a custom validator for it if you want 🙂!
