@@ -18,3 +18,12 @@ export const nbr: Validator<number> = (value) => {
 };
 
 export const str: Validator<string> = (value) => value;
+
+export const oneOf =
+  <T extends string>(values: Readonly<T[]>): Validator<T> =>
+  (value) => {
+    // @ts-expect-error
+    if (values.includes(value)) {
+      return value as T;
+    }
+  };
