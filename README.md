@@ -1,6 +1,6 @@
 # ✓ valienv
 
-A simple environment variables validator for Node.js and web browsers.
+A simple environment variables validator for Node.js, web browsers and React Native.
 
 [![mit licence](https://img.shields.io/dub/l/vibe-d.svg?style=for-the-badge)](https://github.com/zoontek/valienv/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/valienv?style=for-the-badge)](https://www.npmjs.org/package/valienv)
@@ -107,8 +107,9 @@ _⚠️  The values set has to be correctly typed but are **not** validated._
 
 ## 🔧 Custom validators
 
-By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`) and `oneOf`, a helper to create validators for union of string literals.<br>
-But it's very easy to write your own:
+By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`) and `oneOf`, a helper to create validators for union of string literals.
+
+It's very easy to write your own:
 
 ```ts
 import { validateEnv, Validator } from "valienv";
@@ -177,4 +178,4 @@ export const env = validateEnv({
 
 ### Why not handling `NODE_ENV` for us?
 
-Frontend bundlers generally **statically replace** `process.env.NODE_ENV` values at build time, allowing minifiers like [`terser`](https://github.com/terser/terser) to eliminate dead code from production build. Aliasing `NODE_ENV` would prevent such optimisations. But if your are working with Node.js, feel free to implement a custom validator for it if you want 🙂!
+Frontend bundlers generally **statically replace** `process.env.NODE_ENV` values at build time, allowing minifiers like [`terser`](https://github.com/terser/terser) to eliminate dead code from production build. Aliasing `NODE_ENV` would prevent such optimisations. But if your are working with Node.js, feel free to implement a custom validator for it if you want 🙂
