@@ -5,7 +5,7 @@ test("with valid input", () => {
     FOO: "foo",
     BAR: "42",
     BAZ: "true",
-    ENV: "development",
+    QUX: "a",
   };
 
   const output = validateEnv({
@@ -14,7 +14,7 @@ test("with valid input", () => {
       FOO: str,
       BAR: nbr,
       BAZ: bool,
-      ENV: oneOf("development", "production"),
+      QUX: oneOf("a", "b"),
     },
   });
 
@@ -22,7 +22,7 @@ test("with valid input", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
-    ENV: "development",
+    QUX: "a",
   });
 });
 
@@ -31,7 +31,7 @@ test("with valid input (as mixed literals)", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
-    ENV: "development",
+    QUX: "a",
   };
 
   const output = validateEnv({
@@ -40,7 +40,7 @@ test("with valid input (as mixed literals)", () => {
       FOO: str,
       BAR: nbr,
       BAZ: bool,
-      ENV: oneOf("development", "production"),
+      QUX: oneOf("a", "b"),
     },
   });
 
@@ -48,7 +48,7 @@ test("with valid input (as mixed literals)", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
-    ENV: "development",
+    QUX: "a",
   });
 });
 
@@ -76,7 +76,7 @@ test("with invalid env variables", () => {
     FOO: "foo",
     BAR: "bar",
     BAZ: "baz",
-    ENV: "dev",
+    QUX: "c",
   };
 
   try {
@@ -86,18 +86,15 @@ test("with invalid env variables", () => {
         FOO: str,
         BAR: nbr,
         BAZ: bool,
-        ENV: oneOf("development", "production"),
+        QUX: oneOf("a", "b"),
       },
     });
-  } catch (error) {
-    expect(error).toBeInstanceOf(EnvValidationError);
+  } catch (e) {
+    expect(e).toBeInstanceOf(EnvValidationError);
+    const error = e as EnvValidationError;
 
-    expect((error as EnvValidationError).invalidVariables).toEqual([
-      "BAR",
-      "BAZ",
-      "ENV",
-    ]);
-    expect((error as EnvValidationError).missingVariables).toEqual([]);
+    expect(error.invalidVariables).toEqual(["BAR", "BAZ", "QUX"]);
+    expect(error.missingVariables).toEqual([]);
   }
 });
 
@@ -115,14 +112,12 @@ test("with missing env variables", () => {
         BAZ: bool,
       },
     });
-  } catch (error) {
-    expect(error).toBeInstanceOf(EnvValidationError);
+  } catch (e) {
+    expect(e).toBeInstanceOf(EnvValidationError);
+    const error = e as EnvValidationError;
 
-    expect((error as EnvValidationError).invalidVariables).toEqual([]);
-    expect((error as EnvValidationError).missingVariables).toEqual([
-      "BAR",
-      "BAZ",
-    ]);
+    expect(error.invalidVariables).toEqual([]);
+    expect(error.missingVariables).toEqual(["BAR", "BAZ"]);
   }
 });
 

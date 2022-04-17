@@ -151,7 +151,7 @@ import { validateEnv } from "valienv";
 export const env = validateEnv({
   env: process.env,
   validators: {
-    // inlined validators return types are correctly infered
+    // inlined validators return types are correctly inferred
     ETHEREUM_ADDRESS: (value) => {
       if (validator.isEthereumAddress(value)) {
         return value;
