@@ -1,10 +1,11 @@
-import { bool, EnvValidationError, nbr, str, validateEnv } from "../src";
+import { bool, EnvValidationError, nbr, oneOf, str, validateEnv } from "../src";
 
 test("with valid input", () => {
   const input = {
     FOO: "foo",
     BAR: "42",
     BAZ: "true",
+    ENV: "development",
   };
 
   const output = validateEnv({
@@ -13,6 +14,7 @@ test("with valid input", () => {
       FOO: str,
       BAR: nbr,
       BAZ: bool,
+      ENV: oneOf("development", "production"),
     },
   });
 
@@ -20,6 +22,7 @@ test("with valid input", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
+    ENV: "development",
   });
 });
 
@@ -28,6 +31,7 @@ test("with valid input (as mixed literals)", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
+    ENV: "development",
   };
 
   const output = validateEnv({
@@ -36,6 +40,7 @@ test("with valid input (as mixed literals)", () => {
       FOO: str,
       BAR: nbr,
       BAZ: bool,
+      ENV: oneOf("development", "production"),
     },
   });
 
@@ -43,6 +48,7 @@ test("with valid input (as mixed literals)", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
+    ENV: "development",
   });
 });
 
@@ -70,6 +76,7 @@ test("with invalid env variables", () => {
     FOO: "foo",
     BAR: "bar",
     BAZ: "baz",
+    ENV: "dev",
   };
 
   try {
@@ -79,6 +86,7 @@ test("with invalid env variables", () => {
         FOO: str,
         BAR: nbr,
         BAZ: bool,
+        ENV: oneOf("development", "production"),
       },
     });
   } catch (error) {
@@ -87,6 +95,7 @@ test("with invalid env variables", () => {
     expect((error as EnvValidationError).invalidVariables).toEqual([
       "BAR",
       "BAZ",
+      "ENV",
     ]);
     expect((error as EnvValidationError).missingVariables).toEqual([]);
   }

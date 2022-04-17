@@ -20,12 +20,13 @@ This library exports a main function: `validateEnv`.<br>
 Using `validators`, you can parse, validate and type required environment variables (other variables will be excluded).
 
 ```ts
-import { bool, nbr, str, validateEnv } from "valienv";
+import { bool, nbr, oneOf, str, validateEnv } from "valienv";
 
 // with process.env = {
 //   ACCENT_COLOR: "#0099e5",
 //   TIMEOUT_MS: "5000",
 //   ENABLE_ANALYTICS: "true",
+//   NODE_ENV: "development",
 // }
 
 export const env = validateEnv({
@@ -35,6 +36,7 @@ export const env = validateEnv({
     ACCENT_COLOR: str,
     TIMEOUT_MS: nbr,
     ENABLE_ANALYTICS: bool,
+    NODE_ENV: oneOf("development", "test", "production"),
   },
 });
 
@@ -42,6 +44,7 @@ export const env = validateEnv({
 //   ACCENT_COLOR: string;
 //   TIMEOUT_MS: number;
 //   ENABLE_ANALYTICS: boolean;
+//   NODE_ENV: "development" | "test" | "production";
 // }>
 ```
 
@@ -104,7 +107,7 @@ _⚠️  The values set has to be correctly typed but are **not** validated._
 
 ## 🔧 Custom validators
 
-By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`).<br>
+By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`) and `oneOf`, a helper to create validators for union of string literals.<br>
 But it's very easy to write your own:
 
 ```ts
@@ -142,7 +145,6 @@ import { validateEnv } from "valienv";
 
 // with process.env = {
 //   ETHEREUM_ADDRESS: "0xb794f5ea0ba39494ce839613fffba74279579268",
-//   NODE_ENV: "development",
 //   OPENED_COUNTRIES: "FR,BE,DE",
 // }
 
@@ -152,15 +154,6 @@ export const env = validateEnv({
     // inlined validators return types are correctly infered
     ETHEREUM_ADDRESS: (value) => {
       if (validator.isEthereumAddress(value)) {
-        return value;
-      }
-    },
-    NODE_ENV: (value) => {
-      if (
-        value === "development" ||
-        value === "test" ||
-        value === "production"
-      ) {
         return value;
       }
     },
@@ -176,7 +169,6 @@ export const env = validateEnv({
 
 // -> typeof env = Readonly<{
 //   ETHEREUM_ADDRESS: string;
-//   NODE_ENV: "development" | "production" | "test";
 //   OPENED_COUNTRIES: string[];
 // }>
 ```

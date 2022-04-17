@@ -18,3 +18,13 @@ export const nbr: Validator<number> = (value) => {
 };
 
 export const str: Validator<string> = (value) => value;
+
+export const oneOf =
+  <T extends string>(...values: Readonly<T[]>): Validator<T> =>
+  (value) => {
+    const result = values.find((item) => item === value);
+
+    if (typeof result !== "undefined") {
+      return result;
+    }
+  };
