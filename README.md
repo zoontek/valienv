@@ -107,7 +107,7 @@ _⚠️  The values set has to be correctly typed but are **not** validated._
 
 ## 🔧 Custom validators
 
-By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`) and `oneOf`, a helper to create validators for union of string literals.
+By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (for `number`) and `bool` (for `boolean`). It also offers `oneOf`, a helper to create validators for union of string literals.
 
 It's very easy to write your own:
 
