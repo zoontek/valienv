@@ -12,11 +12,13 @@ export class EnvValidationError extends Error {
     const errorMessageLines = [
       "Some environment variables cannot be validated",
     ];
+
     if (invalidVariables.length > 0) {
       errorMessageLines.push(
         `Invalid variables: ${invalidVariables.join(", ")}`,
       );
     }
+
     if (missingVariables.length > 0) {
       errorMessageLines.push(
         `Missing variables: ${missingVariables.join(", ")}`,

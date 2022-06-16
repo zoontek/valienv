@@ -72,9 +72,13 @@ test("with invalid input", () => {
   } catch (error) {
     expect(error).toBeInstanceOf(EnvValidationError);
 
-    const errorMessage = (error as EnvValidationError).message;
-    expect(errorMessage).toContain("Invalid variables: NODE_ENV, SERVER_PORT");
-    expect(errorMessage).toContain("Missing variables: USER_EMAIL, SERVER_URL");
+    expect((error as EnvValidationError).message).toBe(
+      [
+        "Some environment variables cannot be validated",
+        "Invalid variables: NODE_ENV, SERVER_PORT",
+        "Missing variables: USER_EMAIL, SERVER_URL",
+      ].join("\n"),
+    );
 
     expect((error as EnvValidationError).invalidVariables).toEqual([
       "NODE_ENV",
