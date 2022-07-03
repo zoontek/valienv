@@ -1,3 +1,4 @@
+import { expect, test } from "vitest";
 import { bool, EnvValidationError, nbr, oneOf, str, validateEnv } from "../src";
 
 test("with valid input", () => {

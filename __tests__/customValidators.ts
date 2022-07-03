@@ -1,3 +1,4 @@
+import { expect, test } from "vitest";
 import { EnvValidationError, validateEnv, Validator } from "../src";
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
