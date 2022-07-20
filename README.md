@@ -176,12 +176,12 @@ export const env = validate({
 
 ## Optional values
 
-As it's a common pattern to have some optional environment values, you can wrap every validator with a small helper of your choice:
+As it's a common pattern to have some optional environment values, you can write a small helper to wrap every validator with:
 
 ```ts
 import { string, validate } from "valienv";
 
-// Here's an example with a simple TS discriminating union:
+// Here's we are using a simple TS discriminating union:
 type OptionalEnvValue<T> = { isSet: true; value: T } | { isSet: false };
 
 const optional =
