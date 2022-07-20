@@ -1,4 +1,4 @@
-import { EnvValidationError } from "./error";
+import { EnvValidationError } from "./errors";
 import { Validator } from "./validators";
 
 export const validate = <

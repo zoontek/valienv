@@ -1,5 +1,12 @@
 import { expect, test } from "vitest";
-import { bool, EnvValidationError, nbr, oneOf, str, validate } from "../src";
+import {
+  boolean,
+  EnvValidationError,
+  number,
+  oneOf,
+  string,
+  validate,
+} from "../src";
 
 test("with valid input", () => {
   const input = {
@@ -12,9 +19,9 @@ test("with valid input", () => {
   const output = validate({
     env: input,
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
       QUX: oneOf("a", "b"),
     },
   });
@@ -38,9 +45,9 @@ test("with valid input (as mixed literals)", () => {
   const output = validate({
     env: input,
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
       QUX: oneOf("a", "b"),
     },
   });
@@ -63,7 +70,7 @@ test("with extra env variables", () => {
   const output = validate({
     env: input,
     validators: {
-      FOO: str,
+      FOO: string,
     },
   });
 
@@ -84,9 +91,9 @@ test("with invalid env variables", () => {
     validate({
       env: input,
       validators: {
-        FOO: str,
-        BAR: nbr,
-        BAZ: bool,
+        FOO: string,
+        BAR: number,
+        BAZ: boolean,
         QUX: oneOf("a", "b"),
       },
     });
@@ -108,9 +115,9 @@ test("with missing env variables", () => {
     validate({
       env: input,
       validators: {
-        FOO: str,
-        BAR: nbr,
-        BAZ: bool,
+        FOO: string,
+        BAR: number,
+        BAZ: boolean,
       },
     });
   } catch (e) {
@@ -132,9 +139,9 @@ test("with invalid and missing env variables", () => {
     validate({
       env: input,
       validators: {
-        FOO: str,
-        BAR: nbr,
-        BAZ: bool,
+        FOO: string,
+        BAR: number,
+        BAZ: boolean,
       },
     });
   } catch (error) {
@@ -156,9 +163,9 @@ test("with prefix", () => {
     env: input,
     prefix: "REACT_APP_",
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
     },
   });
 
@@ -181,9 +188,9 @@ test("with prefix and env variables without it", () => {
       env: input,
       prefix: "REACT_APP_",
       validators: {
-        FOO: str,
-        BAR: nbr,
-        BAZ: bool,
+        FOO: string,
+        BAR: number,
+        BAZ: boolean,
       },
     });
   } catch (error) {
@@ -207,9 +214,9 @@ test("with overrides", () => {
   const output = validate({
     env: input,
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
     },
     overrides: {
       FOO: "overriddenFoo",
@@ -231,9 +238,9 @@ test("with missing env variables and overrides", () => {
   const output = validate({
     env: input,
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
     },
     overrides: {
       BAR: 42,
@@ -257,9 +264,9 @@ test("with prefix and overrides", () => {
     env: input,
     prefix: "REACT_APP_",
     validators: {
-      FOO: str,
-      BAR: nbr,
-      BAZ: bool,
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
     },
     overrides: {
       BAR: 42,

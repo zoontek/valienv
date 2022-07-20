@@ -1,6 +1,6 @@
 export type Validator<T> = (value: string) => T | undefined;
 
-export const bool: Validator<boolean> = (value) => {
+export const boolean: Validator<boolean> = (value) => {
   if (value === "true") {
     return true;
   }
@@ -9,7 +9,7 @@ export const bool: Validator<boolean> = (value) => {
   }
 };
 
-export const nbr: Validator<number> = (value) => {
+export const number: Validator<number> = (value) => {
   const parsed = parseFloat(value);
 
   if (!Number.isNaN(parsed)) {
@@ -17,7 +17,7 @@ export const nbr: Validator<number> = (value) => {
   }
 };
 
-export const str: Validator<string> = (value) => value;
+export const string: Validator<string> = (value) => value;
 
 export const oneOf =
   <T extends string>(...values: Readonly<T[]>): Validator<T> =>
