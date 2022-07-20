@@ -1,3 +1,3 @@
 export * from "./error";
-export * from "./validateEnv";
+export * from "./validate";
 export * from "./validators";

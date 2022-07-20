@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { bool, EnvValidationError, nbr, oneOf, str, validateEnv } from "../src";
+import { bool, EnvValidationError, nbr, oneOf, str, validate } from "../src";
 
 test("with valid input", () => {
   const input = {
@@ -9,7 +9,7 @@ test("with valid input", () => {
     QUX: "a",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       FOO: str,
@@ -35,7 +35,7 @@ test("with valid input (as mixed literals)", () => {
     QUX: "a",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       FOO: str,
@@ -60,7 +60,7 @@ test("with extra env variables", () => {
     BAZ: "true",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       FOO: str,
@@ -81,7 +81,7 @@ test("with invalid env variables", () => {
   };
 
   try {
-    validateEnv({
+    validate({
       env: input,
       validators: {
         FOO: str,
@@ -105,7 +105,7 @@ test("with missing env variables", () => {
   };
 
   try {
-    validateEnv({
+    validate({
       env: input,
       validators: {
         FOO: str,
@@ -129,7 +129,7 @@ test("with invalid and missing env variables", () => {
   };
 
   try {
-    validateEnv({
+    validate({
       env: input,
       validators: {
         FOO: str,
@@ -152,7 +152,7 @@ test("with prefix", () => {
     REACT_APP_BAZ: "true",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     prefix: "REACT_APP_",
     validators: {
@@ -177,7 +177,7 @@ test("with prefix and env variables without it", () => {
   };
 
   try {
-    validateEnv({
+    validate({
       env: input,
       prefix: "REACT_APP_",
       validators: {
@@ -204,7 +204,7 @@ test("with overrides", () => {
     BAZ: "true",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       FOO: str,
@@ -228,7 +228,7 @@ test("with missing env variables and overrides", () => {
     FOO: "foo",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       FOO: str,
@@ -253,7 +253,7 @@ test("with prefix and overrides", () => {
     REACT_APP_FOO: "foo",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     prefix: "REACT_APP_",
     validators: {

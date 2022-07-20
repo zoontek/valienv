@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { EnvValidationError, validateEnv, Validator } from "../src";
+import { EnvValidationError, validate, Validator } from "../src";
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
   if (value === "development" || value === "test" || value === "production") {
@@ -36,7 +36,7 @@ test("with valid input", () => {
     SERVER_PORT: "3000",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       NODE_ENV: nodeEnv,
@@ -61,7 +61,7 @@ test("with invalid input", () => {
   };
 
   try {
-    validateEnv({
+    validate({
       env: input,
       validators: {
         NODE_ENV: nodeEnv,
@@ -100,7 +100,7 @@ test("with invalid overrides", () => {
     SERVER_PORT: "3000",
   };
 
-  const output = validateEnv({
+  const output = validate({
     env: input,
     validators: {
       SERVER_URL: url,

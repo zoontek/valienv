@@ -16,11 +16,11 @@ $ yarn add valienv
 
 ## 📘 Basic usage
 
-This library exports a main function: `validateEnv`.<br>
+This library exports a main function: `validate`.<br>
 Using `validators`, you can parse, validate and type required environment variables (other variables will be excluded).
 
 ```ts
-import { bool, nbr, oneOf, str, validateEnv } from "valienv";
+import { bool, nbr, oneOf, str, validate } from "valienv";
 
 // with process.env = {
 //   ACCENT_COLOR: "#0099e5",
@@ -29,7 +29,7 @@ import { bool, nbr, oneOf, str, validateEnv } from "valienv";
 //   NODE_ENV: "development",
 // }
 
-export const env = validateEnv({
+export const env = validate({
   env: process.env,
   validators: {
     // we validate env using bundled validators
@@ -52,7 +52,7 @@ _⚠️  In case of incorrect environment variables, the function will throw an
 
 ## 📕 Advanced usage
 
-The `validateEnv` function accepts `prefix` and `overrides` options.
+The `validate` function accepts `prefix` and `overrides` options.
 
 #### prefix
 
@@ -60,13 +60,13 @@ Some bundlers only expose prefixed environment variables to your application (ex
 The `prefix` option is very useful to remove them.
 
 ```ts
-import { str, validateEnv } from "valienv";
+import { str, validate } from "valienv";
 
 // with process.env = {
 //   REACT_APP_CONTACT_EMAIL: "zoontek@github.com",
 // }
 
-export const env = validateEnv({
+export const env = validate({
   env: process.env,
   prefix: "REACT_APP_",
   validators: {
@@ -82,13 +82,13 @@ export const env = validateEnv({
 The `overrides` option is useful to override some variables in some contexts.
 
 ```ts
-import { str, validateEnv } from "valienv";
+import { str, validate } from "valienv";
 
 // with process.env = {
 //   CONTACT_EMAIL: "zoontek@github.com",
 // }
 
-export const env = validateEnv({
+export const env = validate({
   env: process.env,
   validators: {
     CONTACT_EMAIL: str,
@@ -112,7 +112,7 @@ By default, `valienv` only exports 3 validators: `str` (for `string`), `nbr` (fo
 It's very easy to write your own:
 
 ```ts
-import { validateEnv, Validator } from "valienv";
+import { validate, Validator } from "valienv";
 
 // A validator take raw input, try to parse it and
 // returns the result in case of valid value:
@@ -128,7 +128,7 @@ const port: Validator<number> = (value /*: string*/) => {
 //   PORT: "3000",
 // }
 
-export const env = validateEnv({
+export const env = validate({
   env: process.env,
   validators: {
     PORT: port,
@@ -142,14 +142,14 @@ You can even go wild by using stricter types, complex parsing, your favorite val
 
 ```ts
 import validator from "validator";
-import { validateEnv } from "valienv";
+import { validate } from "valienv";
 
 // with process.env = {
 //   ETHEREUM_ADDRESS: "0xb794f5ea0ba39494ce839613fffba74279579268",
 //   OPENED_COUNTRIES: "FR,BE,DE",
 // }
 
-export const env = validateEnv({
+export const env = validate({
   env: process.env,
   validators: {
     // inlined validators return types are correctly inferred
