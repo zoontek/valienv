@@ -226,7 +226,7 @@ const env = validate({
 
 env.FOO.match({
   Some: (value) => {
-    // env.FOO is set, you can use it's value
+    // env.FOO is set, you can use its value
   },
   None: () => {
     // env.FOO isn't set
