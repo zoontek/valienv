@@ -28,7 +28,7 @@
     "build": "yarn clean && microbundle -f cjs,es",
     "clean": "rm -rf dist",
     "dev": "microbundle watch",
-    "format": "prettier '**/*.{js,md,ts,tsx}' --write",
+    "format": "prettier '**/*' -u -w",
     "lint": "eslint --ext ts,tsx __tests__ src",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
@@ -44,7 +44,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@types/node": "^18.0.6",
+    "@types/node": "^18.6.1",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "eslint": "^8.20.0",
@@ -52,6 +52,6 @@
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.0.0",
     "typescript": "^4.7.4",
-    "vitest": "^0.18.1"
+    "vitest": "^0.19.0"
   }
 }
