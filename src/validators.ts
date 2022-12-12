@@ -19,6 +19,12 @@ export const number: Validator<number> = (value) => {
 
 export const string: Validator<string> = (value) => value;
 
+export const nonEmptyString: Validator<string> = (value) => {
+  if (value) {
+    return value;
+  }
+};
+
 export const oneOf =
   <T extends string>(...values: Readonly<T[]>): Validator<T> =>
   (value) => {
