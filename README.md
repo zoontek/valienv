@@ -14,7 +14,7 @@ $ npm i valienv --save
 $ yarn add valienv
 ```
 
-## 📘 Basic usage
+## 📘 Usage
 
 This library exports a main function: `validate`.<br>
 Using `validators`, you can parse, validate and type required environment variables (other variables will be excluded).
@@ -50,7 +50,7 @@ export const env = validate({
 
 _⚠️  In case of incorrect environment variables, the function will throw an `EnvValidationError` exposing `invalidVariables` and `missingVariables` names (not their values) to prevent your application from starting._
 
-### overrides
+#### overrides
 
 The `overrides` option is useful to override some variables in some contexts.
 
@@ -77,8 +77,6 @@ export const env = validate({
 ```
 
 _⚠️  The values set has to be correctly typed but are **not** validated._
-
-## 📕 Advanced usage
 
 ### Custom validators
 
@@ -211,7 +209,7 @@ env.FOO.match({
 
 ## ❓ Questions
 
-### Why not handling `NODE_ENV` for us?
+#### Why not handling `NODE_ENV` for us?
 
 Frontend bundlers generally **statically replace** `process.env.NODE_ENV` values at build time, allowing minifiers like [`terser`](https://github.com/terser/terser) to eliminate dead code from production build. Aliasing `NODE_ENV` would prevent such optimisations.<br />
 But if you are working with Node.js, feel free to use `oneOf` on `NODE_ENV` if you want.
