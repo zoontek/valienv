@@ -50,11 +50,7 @@ export const env = validate({
 
 _⚠️  In case of incorrect environment variables, the function will throw an `EnvValidationError` exposing `invalidVariables` and `missingVariables` names (not their values) to prevent your application from starting._
 
-## 📕 Advanced usage
-
-The `validate` function accepts an `overrides` option.
-
-#### overrides
+### overrides
 
 The `overrides` option is useful to override some variables in some contexts.
 
@@ -82,7 +78,9 @@ export const env = validate({
 
 _⚠️  The values set has to be correctly typed but are **not** validated._
 
-## Custom validators
+## 📕 Advanced usage
+
+### Custom validators
 
 By default, `valienv` only exports 3 validators: `string`, `number` and `boolean`. It also offers `oneOf`, a helper to create validators for union of string literals.
 
@@ -151,7 +149,7 @@ export const env = validate({
 // }>
 ```
 
-## Optional values
+### Optional values
 
 As it's a common pattern to have some optional environment values, you can write a small helper to wrap every validator with:
 
@@ -183,7 +181,7 @@ if (env.FOO.isSet) {
 }
 ```
 
-But you can also wrap them using a library of your choice:
+But you can also wrap them using a library of your choice. Here's an example with [`@swan-io/boxed`](https://github.com/swan-io/boxed):
 
 ```ts
 import { string, validate } from "valienv";
