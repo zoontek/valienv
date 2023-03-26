@@ -6,12 +6,10 @@ export const validate = <
 >({
   env,
   validators,
-  prefix = "",
   overrides = {},
 }: {
   env: Record<string, string | number | boolean | undefined>;
   validators: Validators;
-  prefix?: string;
   overrides?: {
     [Key in keyof Validators]?: ReturnType<Validators[Key]>;
   };
@@ -38,7 +36,7 @@ export const validate = <
     }
 
     const validator = validators[key];
-    const value = env[prefix + key];
+    const value = env[key];
 
     if (typeof value === "undefined") {
       missingVariables.push(key);

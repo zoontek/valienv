@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { EnvValidationError, validate, Validator } from "../src";
+import { EnvValidationError, Validator, validate } from "../src";
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
   if (value === "development" || value === "test" || value === "production") {

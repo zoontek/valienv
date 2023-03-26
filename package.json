@@ -1,6 +1,6 @@
 {
   "name": "valienv",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "MIT",
   "description": "A simple environment variables validator for Node.js and web browsers.",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -44,14 +44,14 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@types/node": "^18.6.1",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "eslint": "^8.20.0",
-    "microbundle": "^0.15.0",
-    "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^3.0.0",
-    "typescript": "^4.7.4",
-    "vitest": "^0.19.0"
+    "@types/node": "^18.15.10",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "microbundle": "^0.15.1",
+    "prettier": "^2.8.7",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   }
 }

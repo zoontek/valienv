@@ -52,30 +52,7 @@ _⚠️  In case of incorrect environment variables, the function will throw an
 
 ## 📕 Advanced usage
 
-The `validate` function accepts `prefix` and `overrides` options.
-
-#### prefix
-
-Some bundlers only expose prefixed environment variables to your application (ex: [Create React App](https://create-react-app.dev/docs/adding-custom-environment-variables/), [Vite](https://vitejs.dev/guide/env-and-mode.html)).<br>
-The `prefix` option is very useful to remove them.
-
-```ts
-import { string, validate } from "valienv";
-
-// with process.env = {
-//   REACT_APP_CONTACT_EMAIL: "zoontek@github.com",
-// }
-
-export const env = validate({
-  env: process.env,
-  prefix: "REACT_APP_",
-  validators: {
-    CONTACT_EMAIL: string,
-  },
-});
-
-// -> typeof env = Readonly<{ CONTACT_EMAIL: string }>
-```
+The `validate` function accepts an `overrides` option.
 
 #### overrides
 
