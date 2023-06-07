@@ -1,24 +1,28 @@
-export type Validator<T> = (value: string) => T | undefined;
+export type Validator<T> = (value: string | undefined) => T | undefined;
 
 export const boolean: Validator<boolean> = (value) => {
-  if (value === "true") {
-    return true;
-  }
-  if (value === "false") {
-    return false;
+  if (typeof value !== "undefined") {
+    if (value === "true") {
+      return true;
+    }
+    if (value === "false") {
+      return false;
+    }
   }
 };
 
 export const number: Validator<number> = (value) => {
-  const float = Number.parseFloat(value);
+  if (typeof value !== "undefined") {
+    const number = Number.parseFloat(value);
 
-  if (!Number.isNaN(float)) {
-    return float;
+    if (!Number.isNaN(number)) {
+      return number;
+    }
   }
 };
 
 export const string: Validator<string> = (value) => {
-  if (value !== "") {
+  if (typeof value !== "undefined" && value !== "") {
     return value;
   }
 };
@@ -26,9 +30,11 @@ export const string: Validator<string> = (value) => {
 export const oneOf =
   <T extends string>(...values: Readonly<T[]>): Validator<T> =>
   (value) => {
-    const result = values.find((item) => item === value);
+    if (typeof value !== "undefined") {
+      const result = values.find((item) => item === value);
 
-    if (typeof result !== "undefined") {
-      return result;
+      if (typeof result !== "undefined") {
+        return result;
+      }
     }
   };

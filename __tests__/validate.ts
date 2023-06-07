@@ -26,33 +26,7 @@ test("with valid input", () => {
     },
   });
 
-  expect(output).toEqual({
-    FOO: "foo",
-    BAR: 42,
-    BAZ: true,
-    QUX: "a",
-  });
-});
-
-test("with valid input (as mixed literals)", () => {
-  const input = {
-    FOO: "foo",
-    BAR: 42,
-    BAZ: true,
-    QUX: "a",
-  };
-
-  const output = validate({
-    env: input,
-    validators: {
-      FOO: string,
-      BAR: number,
-      BAZ: boolean,
-      QUX: oneOf("a", "b"),
-    },
-  });
-
-  expect(output).toEqual({
+  expect(output).toStrictEqual({
     FOO: "foo",
     BAR: 42,
     BAZ: true,
@@ -74,7 +48,7 @@ test("with extra env variables", () => {
     },
   });
 
-  expect(output).toEqual({
+  expect(output).toStrictEqual({
     FOO: "foo",
   });
 });
@@ -100,9 +74,7 @@ test("with invalid env variables", () => {
   } catch (e) {
     expect(e).toBeInstanceOf(EnvValidationError);
     const error = e as EnvValidationError;
-
-    expect(error.invalidVariables).toEqual(["BAR", "BAZ", "QUX"]);
-    expect(error.missingVariables).toEqual([]);
+    expect(error.variables).toStrictEqual(["BAR", "BAZ", "QUX"]);
   }
 });
 
@@ -123,9 +95,7 @@ test("with missing env variables", () => {
   } catch (e) {
     expect(e).toBeInstanceOf(EnvValidationError);
     const error = e as EnvValidationError;
-
-    expect(error.invalidVariables).toEqual([]);
-    expect(error.missingVariables).toEqual(["BAR", "BAZ"]);
+    expect(error.variables).toStrictEqual(["BAR", "BAZ"]);
   }
 });
 
@@ -147,8 +117,10 @@ test("with invalid and missing env variables", () => {
   } catch (error) {
     expect(error).toBeInstanceOf(EnvValidationError);
 
-    expect((error as EnvValidationError).invalidVariables).toEqual(["BAR"]);
-    expect((error as EnvValidationError).missingVariables).toEqual(["BAZ"]);
+    expect((error as EnvValidationError).variables).toStrictEqual([
+      "BAR",
+      "BAZ",
+    ]);
   }
 });
 
@@ -171,7 +143,7 @@ test("with overrides", () => {
     },
   });
 
-  expect(output).toEqual({
+  expect(output).toStrictEqual({
     FOO: "overriddenFoo",
     BAR: 42,
     BAZ: true,
@@ -196,7 +168,7 @@ test("with missing env variables and overrides", () => {
     },
   });
 
-  expect(output).toEqual({
+  expect(output).toStrictEqual({
     FOO: "foo",
     BAR: 42,
     BAZ: true,

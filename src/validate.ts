@@ -17,9 +17,7 @@ export const validate = <
   [Key in keyof Validators]: Exclude<ReturnType<Validators[Key]>, undefined>;
 }> => {
   const variables: Record<string, unknown> = {};
-
   const invalidVariables: string[] = [];
-  const missingVariables: string[] = [];
 
   const validatorsKeys = Object.keys(validators);
   const overridesKeys = Object.keys(overrides).filter(
@@ -38,13 +36,8 @@ export const validate = <
     const validator = validators[key];
     const value = env[key];
 
-    if (typeof value === "undefined") {
-      missingVariables.push(key);
-      return;
-    }
-
     if (typeof validator !== "undefined") {
-      const parsed = validator(String(value));
+      const parsed = validator(value);
 
       if (typeof parsed !== "undefined") {
         variables[key] = parsed;
@@ -54,8 +47,8 @@ export const validate = <
     }
   });
 
-  if (invalidVariables.length > 0 || missingVariables.length > 0) {
-    throw new EnvValidationError({ invalidVariables, missingVariables });
+  if (invalidVariables.length > 0) {
+    throw new EnvValidationError(invalidVariables);
   }
 
   // @ts-expect-error
