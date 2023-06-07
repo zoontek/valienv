@@ -8,7 +8,7 @@ export const validate = <
   validators,
   overrides = {},
 }: {
-  env: Record<string, string | number | boolean | undefined>;
+  env: Record<string, string | undefined>;
   validators: Validators;
   overrides?: {
     [Key in keyof Validators]?: ReturnType<Validators[Key]>;
