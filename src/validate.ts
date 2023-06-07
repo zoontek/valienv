@@ -18,8 +18,8 @@ export const validate = <
 }> => {
   const variables: Record<string, unknown> = {};
   const invalidVariables: string[] = [];
-
   const validatorsKeys = Object.keys(validators);
+
   const overridesKeys = Object.keys(overrides).filter(
     (key) => validatorsKeys.indexOf(key) !== -1, // only keep keys from validators
   );
