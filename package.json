@@ -2,7 +2,7 @@
   "name": "valienv",
   "version": "0.4.0",
   "license": "MIT",
-  "description": "A simple environment variables validator for Node.js and web browsers.",
+  "description": "A simple environment variables validator for Node.js, web browsers and React Native",
   "author": "Mathieu Acthernoene <zoontek@gmail.com>",
   "homepage": "https://github.com/zoontek/valienv#readme",
   "repository": {
