@@ -20,7 +20,7 @@ const url: Validator<URL> = (value = "") => {
 };
 
 const port: Validator<number> = (value = "") => {
-  const number = Number.parseInt(value, 10);
+  const number = Number.parseInt(value);
 
   if (number > 0 && number < 65536) {
     return number;
