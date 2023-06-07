@@ -164,7 +164,7 @@ const env = validate({
 });
 
 if (env.FOO.defined) {
-  console.log(env.FOO.value); // FOO.value can only be accessed when "defined" is true
+  console.log(env.FOO.value); // FOO.value can only be accessed when defined is true
 }
 ```
 
