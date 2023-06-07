@@ -10,14 +10,18 @@ export const boolean: Validator<boolean> = (value) => {
 };
 
 export const number: Validator<number> = (value) => {
-  const parsed = parseFloat(value);
+  const float = Number.parseFloat(value);
 
-  if (!Number.isNaN(parsed)) {
-    return parsed;
+  if (!Number.isNaN(float)) {
+    return float;
   }
 };
 
-export const string: Validator<string> = (value) => value;
+export const string: Validator<string> = (value) => {
+  if (value !== "") {
+    return value;
+  }
+};
 
 export const oneOf =
   <T extends string>(...values: Readonly<T[]>): Validator<T> =>
