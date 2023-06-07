@@ -7,27 +7,23 @@ const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
   }
 };
 
-const email: Validator<string> = (value) => {
-  if (typeof value !== "undefined" && /.+@.+\..+/.test(value)) {
+const email: Validator<string> = (value = "") => {
+  if (/.+@.+\..+/.test(value)) {
     return value;
   }
 };
 
-const url: Validator<URL> = (value) => {
+const url: Validator<URL> = (value = "") => {
   try {
-    if (typeof value !== "undefined") {
-      return new URL(value);
-    }
+    return new URL(value);
   } catch {} // eslint-disable-line no-empty
 };
 
-const port: Validator<number> = (value) => {
-  if (typeof value !== "undefined") {
-    const number = Number.parseInt(value, 10);
+const port: Validator<number> = (value = "") => {
+  const number = Number.parseInt(value, 10);
 
-    if (number > 0 && number < 65536) {
-      return number;
-    }
+  if (number > 0 && number < 65536) {
+    return number;
   }
 };
 
@@ -60,7 +56,8 @@ test("with valid input", () => {
 test("with invalid input", () => {
   const input = {
     NODE_ENV: "staging",
-    SERVER_URL: "",
+    USER_EMAIL: "mathieu",
+    SERVER_URL: "youtube",
     SERVER_PORT: "three thousand",
   };
 

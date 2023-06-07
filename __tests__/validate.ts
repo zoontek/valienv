@@ -4,6 +4,7 @@ import {
   boolean,
   number,
   oneOf,
+  optional,
   string,
   validate,
 } from "../src";
@@ -81,6 +82,7 @@ test("with invalid env variables", () => {
 test("with missing env variables", () => {
   const input = {
     FOO: "foo",
+    BAR: "", // empty strings means not set
   };
 
   try {
@@ -88,7 +90,7 @@ test("with missing env variables", () => {
       env: input,
       validators: {
         FOO: string,
-        BAR: number,
+        BAR: string,
         BAZ: boolean,
       },
     });
@@ -172,5 +174,30 @@ test("with missing env variables and overrides", () => {
     FOO: "foo",
     BAR: 42,
     BAZ: true,
+  });
+});
+
+test("with optional values", () => {
+  const input = {
+    FOO: "foo",
+    BAR: "", // empty strings means not set
+    QUX: "a",
+  };
+
+  const output = validate({
+    env: input,
+    validators: {
+      FOO: string,
+      BAR: optional(string),
+      BAZ: optional(number),
+      QUX: optional(oneOf("a", "b")),
+    },
+  });
+
+  expect(output).toStrictEqual({
+    FOO: "foo",
+    BAR: { defined: false },
+    BAZ: { defined: false },
+    QUX: { defined: true, value: "a" },
   });
 });

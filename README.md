@@ -89,11 +89,13 @@ import { validate, Validator } from "valienv";
 
 // A validator take raw input, try to parse it and
 // returns the result in case of valid value:
-const port: Validator<number> = (value /*: string*/) => {
-  const parsed = parseInt(value);
+const port: Validator<number> = (
+  value: string | undefined = "",
+): number | undefined => {
+  const number = Number.parseInt(value);
 
-  if (parsed > 0 && parsed < 65536) {
-    return parsed;
+  if (number > 0 && number < 65536) {
+    return number;
   }
 };
 
@@ -126,12 +128,12 @@ export const env = validate({
   env: process.env,
   validators: {
     // inlined validators return types are correctly inferred
-    ETHEREUM_ADDRESS: (value) => {
+    ETHEREUM_ADDRESS: (value = "") => {
       if (validator.isEthereumAddress(value)) {
         return value;
       }
     },
-    OPENED_COUNTRIES: (value) => {
+    OPENED_COUNTRIES: (value = "") => {
       const array = value.split(",");
 
       if (array.every(validator.isISO31661Alpha2)) {
@@ -149,23 +151,10 @@ export const env = validate({
 
 ### Optional values
 
-As it's a common pattern to have some optional environment values, you can write a small helper to wrap every validator with:
+As it's a common pattern to have some optional environment values, we provide `optional`, a small helper to wrap every validator with:
 
 ```ts
-import { string, validate } from "valienv";
-
-// Here's we are using a simple TS discriminating union:
-type OptionalEnvValue<T> = { isSet: true; value: T } | { isSet: false };
-
-const optional =
-  <T>(validator: Validator<T>): Validator<OptionalEnvValue<T>> =>
-  (value) => {
-    const result = validator(value);
-
-    return typeof result !== "undefined"
-      ? { isSet: true, value: result }
-      : { isSet: false };
-  };
+import { optional, string, validate } from "valienv";
 
 const env = validate({
   env: process.env,
@@ -174,12 +163,12 @@ const env = validate({
   },
 });
 
-if (env.FOO.isSet) {
-  console.log(env.FOO.value); // FOO.value can only be accessed when isSet is true
+if (env.FOO.defined) {
+  console.log(env.FOO.value); // FOO.value can only be accessed when "defined" is true
 }
 ```
 
-But you can also wrap them using a library of your choice. Here's an example with [`@swan-io/boxed`](https://github.com/swan-io/boxed):
+You can also wrap validators using a library of your choice. Here's an example with [`@swan-io/boxed`](https://github.com/swan-io/boxed):
 
 ```ts
 import { string, validate } from "valienv";
