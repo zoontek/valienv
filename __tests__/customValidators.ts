@@ -7,24 +7,23 @@ const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
   }
 };
 
-const email: Validator<string> = (value) => {
+const email: Validator<string> = (value = "") => {
   if (/.+@.+\..+/.test(value)) {
     return value;
   }
 };
 
-const url: Validator<string> = (value) => {
+const url: Validator<URL> = (value = "") => {
   try {
-    new URL(value);
-    return value;
-  } catch (_error) {} // eslint-disable-line no-empty
+    return new URL(value);
+  } catch {} // eslint-disable-line no-empty
 };
 
-const port: Validator<number> = (value) => {
-  const parsed = parseInt(value);
+const port: Validator<number> = (value = "") => {
+  const number = Number.parseInt(value);
 
-  if (parsed > 0 && parsed < 65536) {
-    return parsed;
+  if (number > 0 && number < 65536) {
+    return number;
   }
 };
 
@@ -46,10 +45,10 @@ test("with valid input", () => {
     },
   });
 
-  expect(output).toEqual({
+  expect(output).toStrictEqual({
     NODE_ENV: "test",
     USER_EMAIL: "zoontek@github.com",
-    SERVER_URL: "https://github.com",
+    SERVER_URL: new URL("https://github.com"),
     SERVER_PORT: 3000,
   });
 });
@@ -57,6 +56,8 @@ test("with valid input", () => {
 test("with invalid input", () => {
   const input = {
     NODE_ENV: "staging",
+    USER_EMAIL: "mathieu",
+    SERVER_URL: "youtube",
     SERVER_PORT: "three thousand",
   };
 
@@ -74,21 +75,14 @@ test("with invalid input", () => {
     expect(error).toBeInstanceOf(EnvValidationError);
 
     expect((error as EnvValidationError).message).toBe(
-      [
-        "Some environment variables cannot be validated",
-        "Invalid variables: NODE_ENV, SERVER_PORT",
-        "Missing variables: USER_EMAIL, SERVER_URL",
-      ].join("\n"),
+      "Some environment variables cannot be validated: NODE_ENV, USER_EMAIL, SERVER_URL, SERVER_PORT",
     );
 
-    expect((error as EnvValidationError).invalidVariables).toEqual([
+    expect((error as EnvValidationError).variables).toStrictEqual([
       "NODE_ENV",
-      "SERVER_PORT",
-    ]);
-
-    expect((error as EnvValidationError).missingVariables).toEqual([
       "USER_EMAIL",
       "SERVER_URL",
+      "SERVER_PORT",
     ]);
   }
 });
@@ -107,13 +101,13 @@ test("with invalid overrides", () => {
       SERVER_PORT: port,
     },
     overrides: {
-      SERVER_URL: "",
+      SERVER_URL: new URL("https://github.com"),
       SERVER_PORT: 0,
     },
   });
 
-  expect(output).toEqual({
-    SERVER_URL: "",
+  expect(output).toStrictEqual({
+    SERVER_URL: new URL("https://github.com"),
     SERVER_PORT: 0,
   });
 });

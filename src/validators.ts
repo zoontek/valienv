@@ -1,6 +1,10 @@
-export type Validator<T> = (value: string) => T | undefined;
+export type Validator<T> = (value: string | undefined) => T | undefined;
 
-export const boolean: Validator<boolean> = (value) => {
+export type OptionalEnvValue<T> =
+  | { defined: true; value: T }
+  | { defined: false };
+
+export const boolean: Validator<boolean> = (value = "") => {
   if (value === "true") {
     return true;
   }
@@ -9,22 +13,36 @@ export const boolean: Validator<boolean> = (value) => {
   }
 };
 
-export const number: Validator<number> = (value) => {
-  const parsed = parseFloat(value);
+export const number: Validator<number> = (value = "") => {
+  const number = Number.parseFloat(value);
 
-  if (!Number.isNaN(parsed)) {
-    return parsed;
+  if (!Number.isNaN(number)) {
+    return number;
   }
 };
 
-export const string: Validator<string> = (value) => value;
+export const string: Validator<string> = (value = "") => {
+  if (value !== "") {
+    return value;
+  }
+};
 
 export const oneOf =
   <T extends string>(...values: Readonly<T[]>): Validator<T> =>
-  (value) => {
+  (value = "") => {
     const result = values.find((item) => item === value);
 
     if (typeof result !== "undefined") {
       return result;
     }
+  };
+
+export const optional =
+  <T>(validator: Validator<T>): Validator<OptionalEnvValue<T>> =>
+  (value) => {
+    const result = validator(value);
+
+    return typeof result !== "undefined"
+      ? { defined: true, value: result }
+      : { defined: false };
   };

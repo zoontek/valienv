@@ -1,35 +1,13 @@
 export class EnvValidationError extends Error {
-  invalidVariables: string[];
-  missingVariables: string[];
+  variables: string[];
 
-  constructor({
-    invalidVariables = [],
-    missingVariables = [],
-  }: {
-    invalidVariables?: string[];
-    missingVariables?: string[];
-  }) {
-    const errorMessageLines = [
-      "Some environment variables cannot be validated",
-    ];
+  constructor(variables: string[]) {
+    super(
+      "Some environment variables cannot be validated: " + variables.join(", "),
+    );
 
-    if (invalidVariables.length > 0) {
-      errorMessageLines.push(
-        `Invalid variables: ${invalidVariables.join(", ")}`,
-      );
-    }
-
-    if (missingVariables.length > 0) {
-      errorMessageLines.push(
-        `Missing variables: ${missingVariables.join(", ")}`,
-      );
-    }
-
-    super(errorMessageLines.join("\n"));
     Object.setPrototypeOf(this, EnvValidationError.prototype);
-
     this.name = this.constructor.name;
-    this.invalidVariables = invalidVariables;
-    this.missingVariables = missingVariables;
+    this.variables = variables;
   }
 }
