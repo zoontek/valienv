@@ -80,7 +80,7 @@ _⚠️  The values set has to be correctly typed but are **not** validated._
 
 ### Custom validators
 
-By default, `valienv` only exports 3 validators: `string`, `number` and `boolean`. It also offers `oneOf`, a helper to create validators for union of string literals.
+By default, `valienv` exports 6 validators: `string`, `number`, `boolean`, `url`, `port` and `email`. It also offers `oneOf`, a helper to create validators for union of string literals.
 
 It's very easy to write your own:
 
@@ -89,28 +89,26 @@ import { validate, Validator } from "valienv";
 
 // A validator take raw input, try to parse it and
 // returns the result in case of valid value:
-const port: Validator<number> = (
-  value: string | undefined = "",
-): number | undefined => {
-  const number = Number.parseInt(value);
+const buffer: Validator<Buffer> = (value: string = "") => {
+  const valid = /^[A-F\d]$/i.test(value);
 
-  if (number > 0 && number < 65536) {
-    return number;
+  if (valid) {
+    return Buffer.from(value);
   }
 };
 
 // with process.env = {
-//   PORT: "3000",
+//   COOKIE_KEY: "aba4a6fb2222ef28d81e4be445a51fba",
 // }
 
 export const env = validate({
   env: process.env,
   validators: {
-    PORT: port,
+    COOKIE_KEY: buffer,
   },
 });
 
-// -> typeof env = Readonly<{ PORT: number }>
+// -> typeof env = Readonly<{ COOKIE_KEY: Buffer }>
 ```
 
 You can even go wild by using stricter types, complex parsing, your favorite validation library, etc! 🔥

@@ -2,10 +2,13 @@ import { expect, test } from "vitest";
 import {
   EnvValidationError,
   boolean,
+  email,
   number,
   oneOf,
   optional,
+  port,
   string,
+  url,
   validate,
 } from "../src";
 
@@ -15,6 +18,9 @@ test("with valid input", () => {
     BAR: "42",
     BAZ: "true",
     QUX: "a",
+    QUUX: "https://swan.io",
+    FRED: "8080",
+    THUD: "john@doe.com",
   };
 
   const output = validate({
@@ -24,6 +30,9 @@ test("with valid input", () => {
       BAR: number,
       BAZ: boolean,
       QUX: oneOf("a", "b"),
+      QUUX: url,
+      FRED: port,
+      THUD: email,
     },
   });
 
@@ -32,6 +41,9 @@ test("with valid input", () => {
     BAR: 42,
     BAZ: true,
     QUX: "a",
+    QUUX: "https://swan.io",
+    FRED: 8080,
+    THUD: "john@doe.com",
   });
 });
 
@@ -60,6 +72,9 @@ test("with invalid env variables", () => {
     BAR: "bar",
     BAZ: "baz",
     QUX: "c",
+    QUUX: "swan.io",
+    FRED: 72000,
+    THUD: "john-doe.com",
   };
 
   try {
@@ -70,12 +85,23 @@ test("with invalid env variables", () => {
         BAR: number,
         BAZ: boolean,
         QUX: oneOf("a", "b"),
+        QUUX: url,
+        FRED: port,
+        THUD: email,
       },
     });
   } catch (e) {
     expect(e).toBeInstanceOf(EnvValidationError);
     const error = e as EnvValidationError;
-    expect(error.variables).toStrictEqual(["BAR", "BAZ", "QUX"]);
+
+    expect(error.variables).toStrictEqual([
+      "BAR",
+      "BAZ",
+      "QUX",
+      "QUUX",
+      "FRED",
+      "THUD",
+    ]);
   }
 });
 
@@ -130,7 +156,7 @@ test("with overrides", () => {
   const input = {
     FOO: "foo",
     BAR: "42",
-    BAZ: "true",
+    BAZ: "1",
   };
 
   const output = validate({
