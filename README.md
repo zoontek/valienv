@@ -90,7 +90,7 @@ import { validate, Validator } from "valienv";
 // A validator take raw input, try to parse it and
 // returns the result in case of valid value:
 const buffer: Validator<Buffer> = (value: string = "") => {
-  const valid = /^[A-F\d]$/i.test(value);
+  const valid = /^[A-F\d]+$/i.test(value);
 
   if (valid) {
     return Buffer.from(value);
