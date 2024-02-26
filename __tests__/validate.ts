@@ -73,7 +73,7 @@ test("with invalid env variables", () => {
     BAZ: "baz",
     QUX: "c",
     QUUX: "swan.io",
-    FRED: 72000,
+    FRED: "72000",
     THUD: "john-doe.com",
   };
 
