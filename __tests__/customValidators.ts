@@ -1,5 +1,24 @@
-import { expect, test } from "vitest";
-import { EnvValidationError, Validator, validate } from "../src";
+import { afterAll, afterEach, beforeAll, expect, test, vi } from "vitest";
+import { Validator, validate } from "../src";
+import { Mock } from "./types";
+
+let mockLog: Mock<typeof console.error> = undefined;
+let mockExit: Mock<typeof process.exit> = undefined;
+
+beforeAll(() => {
+  mockLog = vi.spyOn(console, "error").mockImplementation(() => {});
+  mockExit = vi.spyOn(process, "exit").mockImplementation(() => ({}) as never);
+});
+
+afterEach(() => {
+  mockLog?.mockReset();
+  mockExit?.mockReset();
+});
+
+afterAll(() => {
+  mockLog?.mockRestore();
+  mockExit?.mockRestore();
+});
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
   if (value === "development" || value === "test" || value === "production") {
@@ -49,28 +68,21 @@ test("with invalid input", () => {
     COOKIE_KEY: "invalid hex",
   };
 
-  try {
-    validate({
-      env: input,
-      validators: {
-        NODE_ENV: nodeEnv,
-        SERVER_URL: url,
-        COOKIE_KEY: hex,
-      },
-    });
-  } catch (error) {
-    expect(error).toBeInstanceOf(EnvValidationError);
+  validate({
+    env: input,
+    validators: {
+      NODE_ENV: nodeEnv,
+      SERVER_URL: url,
+      COOKIE_KEY: hex,
+    },
+  });
 
-    expect((error as EnvValidationError).message).toBe(
-      "Some environment variables cannot be validated: NODE_ENV, SERVER_URL, COOKIE_KEY",
-    );
+  expect(mockLog).toHaveBeenCalledWith(
+    "Some environment variables cannot be validated: NODE_ENV, SERVER_URL, COOKIE_KEY",
+  );
 
-    expect((error as EnvValidationError).variables).toStrictEqual([
-      "NODE_ENV",
-      "SERVER_URL",
-      "COOKIE_KEY",
-    ]);
-  }
+  expect(mockExit).toHaveBeenCalledOnce();
+  expect(mockExit).toHaveBeenCalledWith(1);
 });
 
 test("with invalid overrides", () => {

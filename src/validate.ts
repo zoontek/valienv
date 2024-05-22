@@ -48,7 +48,14 @@ export const validate = <
   });
 
   if (invalidVariables.length > 0) {
-    throw new EnvValidationError(invalidVariables);
+    const error = new EnvValidationError(invalidVariables);
+
+    if (typeof process === "undefined") {
+      throw error;
+    } else {
+      console.error(error.message);
+      process.exit(1);
+    }
   }
 
   // @ts-expect-error

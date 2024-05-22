@@ -1,6 +1,5 @@
-import { expect, test } from "vitest";
+import { afterAll, afterEach, beforeAll, expect, test, vi } from "vitest";
 import {
-  EnvValidationError,
   boolean,
   email,
   number,
@@ -11,6 +10,25 @@ import {
   url,
   validate,
 } from "../src";
+import { Mock } from "./types";
+
+let mockLog: Mock<typeof console.error> = undefined;
+let mockExit: Mock<typeof process.exit> = undefined;
+
+beforeAll(() => {
+  mockLog = vi.spyOn(console, "error").mockImplementation(() => {});
+  mockExit = vi.spyOn(process, "exit").mockImplementation(() => ({}) as never);
+});
+
+afterEach(() => {
+  mockLog?.mockReset();
+  mockExit?.mockReset();
+});
+
+afterAll(() => {
+  mockLog?.mockRestore();
+  mockExit?.mockRestore();
+});
 
 test("with valid input", () => {
   const input = {
@@ -77,32 +95,25 @@ test("with invalid env variables", () => {
     THUD: "john-doe.com",
   };
 
-  try {
-    validate({
-      env: input,
-      validators: {
-        FOO: string,
-        BAR: number,
-        BAZ: boolean,
-        QUX: oneOf("a", "b"),
-        QUUX: url,
-        FRED: port,
-        THUD: email,
-      },
-    });
-  } catch (e) {
-    expect(e).toBeInstanceOf(EnvValidationError);
-    const error = e as EnvValidationError;
+  validate({
+    env: input,
+    validators: {
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
+      QUX: oneOf("a", "b"),
+      QUUX: url,
+      FRED: port,
+      THUD: email,
+    },
+  });
 
-    expect(error.variables).toStrictEqual([
-      "BAR",
-      "BAZ",
-      "QUX",
-      "QUUX",
-      "FRED",
-      "THUD",
-    ]);
-  }
+  expect(mockLog).toHaveBeenCalledWith(
+    "Some environment variables cannot be validated: BAR, BAZ, QUX, QUUX, FRED, THUD",
+  );
+
+  expect(mockExit).toHaveBeenCalledOnce();
+  expect(mockExit).toHaveBeenCalledWith(1);
 });
 
 test("with missing env variables", () => {
@@ -111,20 +122,21 @@ test("with missing env variables", () => {
     BAR: "", // empty strings means not set
   };
 
-  try {
-    validate({
-      env: input,
-      validators: {
-        FOO: string,
-        BAR: string,
-        BAZ: boolean,
-      },
-    });
-  } catch (e) {
-    expect(e).toBeInstanceOf(EnvValidationError);
-    const error = e as EnvValidationError;
-    expect(error.variables).toStrictEqual(["BAR", "BAZ"]);
-  }
+  validate({
+    env: input,
+    validators: {
+      FOO: string,
+      BAR: string,
+      BAZ: boolean,
+    },
+  });
+
+  expect(mockLog).toHaveBeenCalledWith(
+    "Some environment variables cannot be validated: BAR, BAZ",
+  );
+
+  expect(mockExit).toHaveBeenCalledOnce();
+  expect(mockExit).toHaveBeenCalledWith(1);
 });
 
 test("with invalid and missing env variables", () => {
@@ -133,23 +145,21 @@ test("with invalid and missing env variables", () => {
     BAR: "bar",
   };
 
-  try {
-    validate({
-      env: input,
-      validators: {
-        FOO: string,
-        BAR: number,
-        BAZ: boolean,
-      },
-    });
-  } catch (error) {
-    expect(error).toBeInstanceOf(EnvValidationError);
+  validate({
+    env: input,
+    validators: {
+      FOO: string,
+      BAR: number,
+      BAZ: boolean,
+    },
+  });
 
-    expect((error as EnvValidationError).variables).toStrictEqual([
-      "BAR",
-      "BAZ",
-    ]);
-  }
+  expect(mockLog).toHaveBeenCalledWith(
+    "Some environment variables cannot be validated: BAR, BAZ",
+  );
+
+  expect(mockExit).toHaveBeenCalledOnce();
+  expect(mockExit).toHaveBeenCalledWith(1);
 });
 
 test("with overrides", () => {
