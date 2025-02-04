@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, expect, test, vi } from "vitest";
+import { afterAll, afterEach, beforeEach, expect, test, vi } from "vitest";
 import {
   boolean,
   email,
@@ -10,24 +10,22 @@ import {
   url,
   validate,
 } from "../src";
-import { Mock } from "./types";
 
-let mockLog: Mock<typeof console.error> = undefined;
-let mockExit: Mock<typeof process.exit> = undefined;
+const consoleMock = { error: vi.fn() };
+const processMock = { exit: vi.fn() };
 
-beforeAll(() => {
-  mockLog = vi.spyOn(console, "error").mockImplementation(() => {});
-  mockExit = vi.spyOn(process, "exit").mockImplementation(() => ({}) as never);
+beforeEach(() => {
+  vi.stubGlobal("console", consoleMock);
+  vi.stubGlobal("process", processMock);
 });
 
 afterEach(() => {
-  mockLog?.mockReset();
-  mockExit?.mockReset();
+  consoleMock.error.mockReset();
+  processMock.exit.mockReset();
 });
 
 afterAll(() => {
-  mockLog?.mockRestore();
-  mockExit?.mockRestore();
+  vi.unstubAllGlobals();
 });
 
 test("with valid input", () => {
@@ -108,12 +106,12 @@ test("with invalid env variables", () => {
     },
   });
 
-  expect(mockLog).toHaveBeenCalledWith(
+  expect(consoleMock.error).toHaveBeenCalledWith(
     "Some environment variables cannot be validated: BAR, BAZ, QUX, QUUX, FRED, THUD",
   );
 
-  expect(mockExit).toHaveBeenCalledOnce();
-  expect(mockExit).toHaveBeenCalledWith(1);
+  expect(processMock.exit).toHaveBeenCalledOnce();
+  expect(processMock.exit).toHaveBeenCalledWith(1);
 });
 
 test("with missing env variables", () => {
@@ -131,12 +129,12 @@ test("with missing env variables", () => {
     },
   });
 
-  expect(mockLog).toHaveBeenCalledWith(
+  expect(consoleMock.error).toHaveBeenCalledWith(
     "Some environment variables cannot be validated: BAR, BAZ",
   );
 
-  expect(mockExit).toHaveBeenCalledOnce();
-  expect(mockExit).toHaveBeenCalledWith(1);
+  expect(processMock.exit).toHaveBeenCalledOnce();
+  expect(processMock.exit).toHaveBeenCalledWith(1);
 });
 
 test("with invalid and missing env variables", () => {
@@ -154,12 +152,12 @@ test("with invalid and missing env variables", () => {
     },
   });
 
-  expect(mockLog).toHaveBeenCalledWith(
+  expect(consoleMock.error).toHaveBeenCalledWith(
     "Some environment variables cannot be validated: BAR, BAZ",
   );
 
-  expect(mockExit).toHaveBeenCalledOnce();
-  expect(mockExit).toHaveBeenCalledWith(1);
+  expect(processMock.exit).toHaveBeenCalledOnce();
+  expect(processMock.exit).toHaveBeenCalledWith(1);
 });
 
 test("with overrides", () => {
