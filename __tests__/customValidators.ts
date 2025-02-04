@@ -1,23 +1,21 @@
-import { afterAll, afterEach, beforeAll, expect, test, vi } from "vitest";
-import { Validator, validate } from "../src";
-import { Mock } from "./types";
+import { afterAll, afterEach, beforeEach, expect, test, vi } from "vitest";
+import { validate, Validator } from "../src";
 
-let mockLog: Mock<typeof console.error> = undefined;
-let mockExit: Mock<typeof process.exit> = undefined;
+const consoleMock = { error: vi.fn() };
+const processMock = { exit: vi.fn() };
 
-beforeAll(() => {
-  mockLog = vi.spyOn(console, "error").mockImplementation(() => {});
-  mockExit = vi.spyOn(process, "exit").mockImplementation(() => ({}) as never);
+beforeEach(() => {
+  vi.stubGlobal("console", consoleMock);
+  vi.stubGlobal("process", processMock);
 });
 
 afterEach(() => {
-  mockLog?.mockReset();
-  mockExit?.mockReset();
+  consoleMock.error.mockReset();
+  processMock.exit.mockReset();
 });
 
 afterAll(() => {
-  mockLog?.mockRestore();
-  mockExit?.mockRestore();
+  vi.unstubAllGlobals();
 });
 
 const nodeEnv: Validator<"development" | "test" | "production"> = (value) => {
@@ -77,12 +75,12 @@ test("with invalid input", () => {
     },
   });
 
-  expect(mockLog).toHaveBeenCalledWith(
+  expect(consoleMock.error).toHaveBeenCalledWith(
     "Some environment variables cannot be validated: NODE_ENV, SERVER_URL, COOKIE_KEY",
   );
 
-  expect(mockExit).toHaveBeenCalledOnce();
-  expect(mockExit).toHaveBeenCalledWith(1);
+  expect(processMock.exit).toHaveBeenCalledOnce();
+  expect(processMock.exit).toHaveBeenCalledWith(1);
 });
 
 test("with invalid overrides", () => {

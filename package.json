@@ -29,7 +29,7 @@
     "clean": "rm -rf dist",
     "dev": "microbundle watch",
     "format": "prettier '**/*' -u -w",
-    "lint": "eslint --ext ts,tsx __tests__ src",
+    "lint": "eslint",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
     "typecheck": "tsc --noEmit",
@@ -46,14 +46,15 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^20.12.12",
-    "@typescript-eslint/eslint-plugin": "^7.10.0",
-    "@typescript-eslint/parser": "^7.10.0",
-    "eslint": "^8.57.0",
+    "@eslint/js": "^9.19.0",
+    "@types/node": "^20.17.17",
+    "eslint": "^9.19.0",
+    "globals": "^15.14.0",
     "microbundle": "^0.15.1",
-    "prettier": "^3.2.5",
-    "prettier-plugin-organize-imports": "^3.2.4",
-    "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.23.0",
+    "vitest": "^3.0.5"
   }
 }
