@@ -49,10 +49,9 @@ export const string: Validator<string> = (value = "") => {
 };
 
 export const url: Validator<string> = (value = "") => {
-  try {
-    new URL(value);
+  if (URL.canParse(value)) {
     return value;
-  } catch {} // eslint-disable-line no-empty
+  }
 };
 
 export const oneOf =
