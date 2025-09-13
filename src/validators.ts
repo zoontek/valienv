@@ -54,15 +54,17 @@ export const url: Validator<string> = (value = "") => {
   }
 };
 
-export const oneOf =
-  <T extends string>(...values: Readonly<T[]>): Validator<T> =>
-  (value = "") => {
-    const result = values.find((item) => item === value);
+export const oneOf = <T extends string>(
+  ...values: Readonly<T[]>
+): Validator<T> => {
+  const set = new Set<string>(values);
 
-    if (typeof result !== "undefined") {
-      return result;
+  return (value = "") => {
+    if (set.has(value)) {
+      return value as T;
     }
   };
+};
 
 export const optional =
   <T>(validator: Validator<T>): Validator<OptionalEnvValue<T>> =>
